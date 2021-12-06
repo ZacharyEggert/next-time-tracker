@@ -9,6 +9,8 @@ import MongoStore from 'connect-mongo';
 import routes from '@routes';
 import dotenv from 'dotenv';
 dotenv.config();
+
+import { MONGODB_URI } from './constants';
 const PORT = parseInt(process.env.PORT!) || 3000;
 
 const dev = process.env.NODE_ENV !== 'production';
@@ -17,11 +19,9 @@ const handle = app.getRequestHandler();
 
 const main = async () => {
 
-    console.log('Connecting to MongoDB...');
-
-    await mongoose.connect(process.env.MONGODB_URI!);
-
-    console.log('Connected to MongoDB');
+    // console.debug('Connecting to MongoDB...');
+    await mongoose.connect(MONGODB_URI);
+    // console.debug('Connected to MongoDB');
 
     app.prepare().then(() => {
 
@@ -34,7 +34,7 @@ const main = async () => {
                 resave: false,
                 saveUninitialized: false,
                 store: new MongoStore({
-                    mongoUrl: process.env.MONGODB_URI!,
+                    mongoUrl: MONGODB_URI,
                 })
             })
         );
